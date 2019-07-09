@@ -119,13 +119,24 @@ def img_average_denoise(img):
     img.astype(np.uint8)
     print_img(img, "average")
 
-img_average_denoise(gray_img)
-# 图像相减
-
-# 图像相乘除
+# img_average_denoise(gray_img)
 
 # 仿射变换
+def affine_transformation_flip(img, flip_angle):
+    img_shape = img.shape
+    affine_matix = [[np.cos(flip_angle), np.sin(flip_angle), 0],
+                    [-np.sin(flip_angle), np.cos(flip_angle), 0],
+                    [0, 0, 1]]
+    dst_img = np.zeros(img_shape, dtype=np.uint8)
+    for i in range(img_shape[0]):
+        for j in range(img_shape[1]):
+            transfom_matrix = np.array([i, j, 1])
+            dst_matrix = transfom_matrix.dot(affine_matix)
+            dst_img[int(dst_matrix[0])][int(dst_matrix[1])] = img[i][j]
+    
+    print_img(dst_img, "affine transformation flip")
 
+affine_transformation_flip(gray_img, np.pi/2)
 # 图像配准
 
 # 傅里叶变换
